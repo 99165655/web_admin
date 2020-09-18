@@ -25,7 +25,6 @@ import { MySubmit } from '@/api/common/submit'
 import { MyDelete } from '@/api/common/delete'
 import bus from '@/api/common/bus'
 import  status_button  from '@/api/button/status_button'
-import ajax from '@/api/common/ajax'
 export default {
   components: {
     status_button
@@ -111,7 +110,7 @@ export default {
     this.fetchData()
   },
   methods: {
-    create () {
+    created () {
       bus.$on('reload', item => {
         this.fetchData()
       })
@@ -123,29 +122,24 @@ export default {
       })
     },
     handleRowAdd (row, done) {
-
-      ajax('user/add', row).then((res)=>{
-        console.log(res)
-      })
-
-      // this.formOptions.saveLoading = true
-      // MySubmit(row, 'user/add')
-      //   .then(res => {
-      //     // 成功
-      //     setTimeout(() => {
-      //       this.$message({
-      //         message: res.msg,
-      //         type: 'success'
-      //       })
-      //       done()
-      //       this.formOptions.saveLoading = false
-      //       this.fetchData()
-      //     }, 300)
-      //   })
-      //   .catch(err => {
-      //     // 失败
-      //     this.formOptions.saveLoading = false
-      //   })
+      this.formOptions.saveLoading = true
+      MySubmit(row, 'user/add')
+        .then(res => {
+          // 成功
+          setTimeout(() => {
+            this.$message({
+              message: res.msg,
+              type: 'success'
+            })
+            done()
+            this.formOptions.saveLoading = false
+            this.fetchData()
+          }, 300)
+        })
+        .catch(err => {
+          // 失败
+          this.formOptions.saveLoading = false
+        })
     },
     handleDialogCancel (done) {
       done()
