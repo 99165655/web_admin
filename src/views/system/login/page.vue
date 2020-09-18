@@ -85,7 +85,7 @@ export default {
       // 表单
       formLogin: {
         username: '',
-        password: '',
+        password: ''
       },
       // 表单校验
       rules: {

@@ -50,7 +50,6 @@ service.interceptors.request.use(
   },
   error => {
     // 发送失败
-    console.log(error)
     return Promise.reject(error)
   }
 )
@@ -60,6 +59,7 @@ service.interceptors.response.use(
   response => {
     // dataAxios 是 axios 返回数据中的 data
     const dataAxios = response.data
+    console.log(dataAxios)
     // 根据 code 进行判断
     if (dataAxios.code === undefined) {
       // 如果没有 code 代表这不是项目后端开发的接口 比如可能是 D2Admin 请求最新版本
@@ -89,7 +89,7 @@ service.interceptors.response.use(
         case 403: error.message = '拒绝访问'; break
         case 404: error.message = `请求地址出错: ${error.response.config.url}`; break
         case 408: error.message = '请求超时'; break
-        case 500: error.message = '服务器内部错误'; break
+        case 500: error.message = error.response.data.message; break
         case 501: error.message = '服务未实现'; break
         case 502: error.message = '网关错误'; break
         case 503: error.message = '服务不可用'; break

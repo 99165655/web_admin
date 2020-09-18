@@ -2,7 +2,7 @@
   <div style="cursor: pointer">
     <el-button size="small" :type="type" @click.native="handleClick">{{ text }}</el-button>
     <el-button size="small" type="primary" @click.native="handleClick">编辑</el-button>
-    <el-button size="small" type="danger" @click.native="handleClick">删除</el-button>
+    <el-button size="small" type="danger" @click.native="delClick">删除</el-button>
   </div>
 </template>
 
@@ -10,7 +10,7 @@
 import { userList } from '@/api/table/user.table'
 import { MySubmit } from '@/api/common/submit'
 import { MyDelete } from '@/api/common/delete'
-
+import bus from '@/api/common/bus'
 export default {
   props: {
     value: {
@@ -35,19 +35,18 @@ export default {
     }
   },
   methods: {
-    handleClick (index) {
-      console.log(this.$emit('input').$props.scope._self.removeRow(0))
-      //this.$refs.d2Crud.removeRow(index)
-      // MyDelete(this.scope.row, 'deluser')
-      //   .then(res => {
-      //     // 成功
-      //     setTimeout(() => {
-      //       this.$message({
-      //         message: res.msg,
-      //         type: 'success'
-      //       })
-      //     }, 300)
-      //   })
+    delClick (index) {
+      MyDelete(this.scope.row, 'user/del')
+        .then(res => {
+          // 成功
+          setTimeout(() => {
+            this.$message({
+              message: res.msg,
+              type: 'success'
+            })
+            bus.$emit('reload')
+          }, 300)
+        })
     }
   }
 }

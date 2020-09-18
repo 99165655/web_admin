@@ -23,7 +23,9 @@
 import { userList } from '@/api/table/user.table'
 import { MySubmit } from '@/api/common/submit'
 import { MyDelete } from '@/api/common/delete'
+import bus from '@/api/common/bus'
 import  status_button  from '@/api/button/status_button'
+import ajax from '@/api/common/ajax'
 export default {
   components: {
     status_button
@@ -54,7 +56,7 @@ export default {
         },
         {
           title: '注册时间',
-          key: 'reg_time',
+          key: 'created_at',
           align: 'center'
         },
         {
@@ -109,6 +111,11 @@ export default {
     this.fetchData()
   },
   methods: {
+    create () {
+      bus.$on('reload', item => {
+        this.fetchData()
+      })
+    },
     // 普通的新增
     addRow () {
       this.$refs.d2Crud.showDialog({
@@ -116,24 +123,29 @@ export default {
       })
     },
     handleRowAdd (row, done) {
-      this.formOptions.saveLoading = true
-      MySubmit(row, 'adduser')
-        .then(res => {
-          // 成功
-          setTimeout(() => {
-            this.$message({
-              message: res.msg,
-              type: 'success'
-            })
-            done()
-            this.formOptions.saveLoading = false
-            this.fetchData()
-          }, 300)
-        })
-        .catch(err => {
-          // 失败
-          this.formOptions.saveLoading = false
-        })
+
+      ajax('user/add', row).then((res)=>{
+        console.log(res)
+      })
+
+      // this.formOptions.saveLoading = true
+      // MySubmit(row, 'user/add')
+      //   .then(res => {
+      //     // 成功
+      //     setTimeout(() => {
+      //       this.$message({
+      //         message: res.msg,
+      //         type: 'success'
+      //       })
+      //       done()
+      //       this.formOptions.saveLoading = false
+      //       this.fetchData()
+      //     }, 300)
+      //   })
+      //   .catch(err => {
+      //     // 失败
+      //     this.formOptions.saveLoading = false
+      //   })
     },
     handleDialogCancel (done) {
       done()
@@ -162,37 +174,6 @@ export default {
     table_reset () {
       this.username = ''
       this.fetchData()
-    },
-    handleRowRemove ({ index, row }, done) {
-      MyDelete(row, 'deluser')
-        .then(res => {
-          // 成功
-          setTimeout(() => {
-            this.$message({
-              message: res.msg,
-              type: 'success'
-            })
-            done()
-            this.fetchData()
-          }, 300)
-        })
-    },
-    text () {
-      console.log(this.show())
-    },
-    handleRowStatus ({ index, row }, done) {
-      MyDelete(row, 'deluser')
-        .then(res => {
-          // 成功
-          setTimeout(() => {
-            this.$message({
-              message: res.msg,
-              type: 'success'
-            })
-            done()
-            this.fetchData()
-          }, 300)
-        })
     }
   }
 }
