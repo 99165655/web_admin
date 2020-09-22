@@ -109,12 +109,12 @@ export default {
   mounted () {
     this.fetchData()
   },
+  created () {
+    bus.$on('reload', item => {
+      this.fetchData()
+    })
+  },
   methods: {
-    created () {
-      bus.$on('reload', item => {
-        this.fetchData()
-      })
-    },
     // 普通的新增
     addRow () {
       this.$refs.d2Crud.showDialog({

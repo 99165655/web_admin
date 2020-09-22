@@ -7,9 +7,7 @@
 </template>
 
 <script>
-import { userList } from '@/api/table/user.table'
 import { MySubmit } from '@/api/common/submit'
-import { MyDelete } from '@/api/common/delete'
 import bus from '@/api/common/bus'
 export default {
   props: {
@@ -36,7 +34,7 @@ export default {
   },
   methods: {
     delClick (index) {
-      MyDelete(this.scope.row, 'user/del')
+      MySubmit(this.scope.row, 'user/del')
         .then(res => {
           // 成功
           setTimeout(() => {
