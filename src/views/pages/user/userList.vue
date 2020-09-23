@@ -123,7 +123,7 @@ export default {
     },
     handleRowAdd (row, done) {
       this.formOptions.saveLoading = true
-      MySubmit(row, 'user/add')
+      MySubmit(row, 'user/status')
         .then(res => {
           // 成功
           setTimeout(() => {

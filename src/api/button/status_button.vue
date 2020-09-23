@@ -1,6 +1,6 @@
 <template>
   <div style="cursor: pointer">
-    <el-button size="small" :type="type" @click.native="handleClick">{{ text }}</el-button>
+    <el-button size="small" :type="type" @click.native="statusClick">{{ text }}</el-button>
     <el-button size="small" type="primary" @click.native="handleClick">编辑</el-button>
     <el-button size="small" type="danger" @click.native="delClick">删除</el-button>
   </div>
@@ -35,6 +35,19 @@ export default {
   methods: {
     delClick (index) {
       MySubmit(this.scope.row, 'user/del')
+        .then(res => {
+          // 成功
+          setTimeout(() => {
+            this.$message({
+              message: res.msg,
+              type: 'success'
+            })
+            bus.$emit('reload')
+          }, 300)
+        })
+    },
+    statusClick (index) {
+      MySubmit(this.scope.row, 'user/status')
         .then(res => {
           // 成功
           setTimeout(() => {
